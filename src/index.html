@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SimpleUglifyJs</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        display: flex;
+        height: 100vh;
+      }
+      .left-panel,
+      .right-panel {
+        flex: 4;
+        padding: 20px;
+      }
+      .middle-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .custom-control {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        width: 100%;
+      }
+
+      textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="left-panel">
+      <textarea
+        id="input-code"
+        placeholder="Paste your JavaScript code here..."
+      ></textarea>
+    </div>
+
+    <div class="middle-panel">
+      <button id="transform-button" class="btn btn-primary mb-3 mx-0">
+        Transform
+      </button>
+      <div class="custom-control custom-radio mb-3">
+        <input
+          type="radio"
+          class="custom-control-input"
+          name="features"
+          id="uglify"
+          value="uglify"
+          checked
+        />
+        <label class="custom-control-label" for="uglify">uglify</label>
+      </div>
+      <div class="custom-control custom-radio mb-3">
+        <input
+          type="radio"
+          class="custom-control-input"
+          name="features"
+          id="addTimer"
+          value="addTimer"
+        />
+        <label class="custom-control-label" for="addTimer">addTimer</label>
+      </div>
+      <div class="custom-control custom-radio mb-3">
+        <input
+          type="radio"
+          class="custom-control-input"
+          name="features"
+          id="enforceStyle"
+          value="enforceStyle"
+        />
+        <label class="custom-control-label" for="enforceStyle"
+          >enforceStyle</label
+        >
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <textarea
+        id="output-code"
+        placeholder="Transformed code will appear here..."
+        readonly
+      ></textarea>
+    </div>
+  </body>
+</html>
