@@ -1,5 +1,5 @@
 import * as Babel from "babel-standalone";
-
+let warnings = [];
 /* plugins */
 
 function uglifyPlugin() {
@@ -84,7 +84,7 @@ function enforceStylePlugin() {
       VariableDeclarator(path) {
         const variableName = path.node.id.name;
         if (!/^[a-z][a-zA-Z0-9]*$/.test(variableName)) {
-          console.warn(
+          warnings.push(
             `Variable name "${variableName}" does not follow camelCase naming convention.`
           );
         }
@@ -94,7 +94,7 @@ function enforceStylePlugin() {
           const bindings = path.scope.bindings;
           Object.keys(bindings).forEach((name) => {
             if (!bindings[name].referenced) {
-              console.warn(
+              warnings.push(
                 `Variable "${name}" is declared but its value is never read.`
               );
             }
@@ -105,7 +105,7 @@ function enforceStylePlugin() {
         const { node } = path;
         const functionName = path.node.id.name;
         if (!/^[a-z][a-zA-Z0-9]*$/.test(functionName)) {
-          console.warn(
+          warnings.push(
             `Function name "${functionName}" does not follow camelCase naming convention.`
           );
         }
@@ -115,7 +115,7 @@ function enforceStylePlugin() {
             (comment) => comment.type === "CommentBlock"
           )
         ) {
-          console.warn(
+          warnings.push(
             `Function "${node.id.name}" should have a documentation comment.`
           );
         }
@@ -129,6 +129,7 @@ Babel.registerPlugin("addTimerPlugin", addTimerPlugin);
 Babel.registerPlugin("enforceStylePlugin", enforceStylePlugin);
 
 export function transformCode(inputCode, options) {
+  warnings = [];
   let outputCode = inputCode;
 
   if (options.uglify) {
@@ -145,6 +146,10 @@ export function transformCode(inputCode, options) {
     outputCode = Babel.transform(outputCode, {
       plugins: [enforceStylePlugin],
     }).code;
+  }
+
+  if (warnings.length > 0) {
+    outputCode = warnings.join("\n");
   }
 
   return outputCode;
